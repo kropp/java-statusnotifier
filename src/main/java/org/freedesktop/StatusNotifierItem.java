@@ -1,5 +1,6 @@
 package org.freedesktop;
 
+import com.canonical.DBusMenu;
 import org.freedesktop.dbus.DBusConnection;
 import org.freedesktop.dbus.Variant;
 import org.freedesktop.dbus.exceptions.DBusException;
@@ -27,6 +28,8 @@ public class StatusNotifierItem implements IStatusNotifierItem, DBus.Properties 
     IStatusNotifierWatcher watcher = connection.getRemoteObject(WATCHER_BUSNAME, WATCHER_OBJECTPATH, IStatusNotifierWatcher.class);
 
     watcher.RegisterStatusNotifierItem(serviceName);
+
+    new DBusMenu(serviceName);
   }
 
   private DBusConnection connection;
