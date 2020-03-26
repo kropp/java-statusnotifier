@@ -1,75 +1,41 @@
 package org.freedesktop;
 
 import com.canonical.DBusMenu;
-import org.freedesktop.dbus.DBusConnection;
-import org.freedesktop.dbus.Variant;
 import org.freedesktop.dbus.exceptions.DBusException;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
-public class StatusNotifierItem implements IStatusNotifierItem, DBus.Properties {
-  private final String WATCHER_BUSNAME = "org.kde.StatusNotifierWatcher";
-  private final String WATCHER_OBJECTPATH = "/StatusNotifierWatcher";
-  private final String SNI_OBJECTPATH = "/StatusNotifierItem";
-
-  private Map<String, Variant<?>> myProperties = new HashMap<>();
-
-  public StatusNotifierItem(String serviceName, String title, Category category, String icon) throws DBusException {
-    myProperties.put("Id", new Variant<>(1));
-    myProperties.put("Title", new Variant<>(title));
-    myProperties.put("Status", new Variant<>(category.toString()));
-    myProperties.put("IconName", new Variant<>(icon));
-
-    connection = DBusConnection.getConnection(DBusConnection.SESSION);
-    connection.requestBusName(serviceName);
-    connection.exportObject(SNI_OBJECTPATH, this);
-
-    IStatusNotifierWatcher watcher = connection.getRemoteObject(WATCHER_BUSNAME, WATCHER_OBJECTPATH, IStatusNotifierWatcher.class);
-
-    watcher.RegisterStatusNotifierItem(serviceName);
-
-    new DBusMenu(serviceName);
+public class StatusNotifierItem {
+  public StatusNotifierItem(String serviceName, String title, IStatusNotifierItem.Category category, String icon, List<MenuItem> menuItems) {
+    try {
+      statusNotifierItem = new StatusNotifierItemImpl(serviceName, title, category, icon);
+      new DBusMenu(serviceName, menuItems);
+    } catch (DBusException e) {
+      statusNotifierItem = null;
+    }
   }
 
-  private DBusConnection connection;
-
-  @Override
-  public <A> A Get(String s, String s1) {
-    return null;
+  public void onActivate(StatusNotifierListener listener) {
+    statusNotifierItem.addActivateListener(listener);
   }
 
-  @Override
-  public <A> void Set(String s, String s1, A a) {
+  public static class MenuItem {
+    public MenuItem(String text, StatusNotifierItemMenuItemListener listener) {
+      this.text = text;
+      this.listener = listener;
+    }
 
+    public String getText() {
+      return text;
+    }
+
+    public StatusNotifierItemMenuItemListener getListener() {
+      return listener;
+    }
+
+    private String text;
+    private StatusNotifierItemMenuItemListener listener;
   }
 
-  @Override
-  public Map<String, Variant<?>> GetAll(String s) {
-    return myProperties;
-  }
-
-  @Override
-  public void ContextMenu(int x, int y) {
-
-  }
-
-  @Override
-  public void Activate(int x, int y) {
-  }
-
-  @Override
-  public void SecondaryActivate(int x, int y) {
-
-  }
-
-  @Override
-  public void Scroll(int delta, String orientation) {
-
-  }
-
-  @Override
-  public boolean isRemote() {
-    return false;
-  }
+  private StatusNotifierItemImpl statusNotifierItem;
 }

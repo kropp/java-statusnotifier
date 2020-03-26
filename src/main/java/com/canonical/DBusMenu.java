@@ -1,5 +1,6 @@
 package com.canonical;
 
+import org.freedesktop.StatusNotifierItem;
 import org.freedesktop.dbus.DBusConnection;
 import org.freedesktop.dbus.UInt32;
 import org.freedesktop.dbus.Variant;
@@ -12,8 +13,10 @@ import java.util.List;
 public class DBusMenu implements IDBusMenu {
   private final DBusConnection connection;
   private final String MENU_OBJECTPATH = "/MenuBar";
+  private List<StatusNotifierItem.MenuItem> menuItems;
 
-  public DBusMenu(String serviceName) throws DBusException {
+  public DBusMenu(String serviceName, List<StatusNotifierItem.MenuItem> menuItems) throws DBusException {
+    this.menuItems = menuItems;
     connection = DBusConnection.getConnection(DBusConnection.SESSION);
     connection.requestBusName(serviceName);
     connection.exportObject(MENU_OBJECTPATH, this);
@@ -24,6 +27,9 @@ public class DBusMenu implements IDBusMenu {
     HashMap<String, Variant<?>> props = new HashMap<>();
     props.put("children-display", new Variant<>("submenu"));
     ArrayList<Variant<?>> layout = new ArrayList<>();
+    for (int i = 0; i < menuItems.size(); i++) {
+      layout.add(new Variant<>(new MenuItem(i + 2)));
+    }
     return new Pair<>(new UInt32(2), new Layout(
         0, props, layout
     ));
@@ -31,8 +37,17 @@ public class DBusMenu implements IDBusMenu {
 
   @Override
   public List<UpdatedProperties> GetGroupProperties(List<Integer> ids, List<String> propertyNames) {
-    List<UpdatedProperties> menuItems = new ArrayList<>();
-    return menuItems;
+    List<UpdatedProperties> result = new ArrayList<>();
+
+    int i = 2;
+    for (StatusNotifierItem.MenuItem menuItem : menuItems) {
+      HashMap<String, Variant<?>> item = new HashMap<>();
+      item.put("label", new Variant<>(menuItem.getText()));
+      result.add(new UpdatedProperties(i, item));
+      i++;
+    }
+
+    return result;
   }
 
   @Override
@@ -42,6 +57,10 @@ public class DBusMenu implements IDBusMenu {
 
   @Override
   public void Event(int id, String eventId, Variant<?> data, UInt32 timestamp) {
+    int idx = id - 2;
+    if (0 <= idx && idx < menuItems.size()) {
+      menuItems.get(idx).getListener().onActivated();
+    }
   }
 
   @Override
