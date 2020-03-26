@@ -5,6 +5,7 @@ import org.freedesktop.dbus.Variant;
 import org.freedesktop.dbus.exceptions.DBusException;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 class StatusNotifierItemImpl implements IStatusNotifierItem, DBus.Properties {
@@ -14,11 +15,14 @@ class StatusNotifierItemImpl implements IStatusNotifierItem, DBus.Properties {
 
   private Map<String, Variant<?>> myProperties = new HashMap<>();
 
-  public StatusNotifierItemImpl(String serviceName, String title, Category category, String icon) throws DBusException {
+  public StatusNotifierItemImpl(String serviceName, String title, Category category, List<Pixmap> pixmaps) throws DBusException {
     myProperties.put("Id", new Variant<>(1));
     myProperties.put("Title", new Variant<>(title));
     myProperties.put("Status", new Variant<>(category.toString()));
-    myProperties.put("IconName", new Variant<>(icon));
+//    myProperties.put("IconName", new Variant<>(icon));
+    Pixmap[] pixmapArray = new Pixmap[pixmaps.size()];
+    pixmaps.toArray(pixmapArray);
+    myProperties.put("IconPixmap", new Variant<>(pixmapArray));
 
     connection = DBusConnection.getConnection(DBusConnection.SESSION);
     connection.requestBusName(serviceName);
