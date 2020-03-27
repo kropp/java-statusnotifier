@@ -16,7 +16,9 @@ class StatusNotifierItemImpl implements IStatusNotifierItem, DBus.Properties {
   private Map<String, Variant<?>> myProperties = new HashMap<>();
 
   public StatusNotifierItemImpl(String serviceName, String title, Category category, List<Pixmap> pixmaps) throws DBusException {
-    myProperties.put("Id", new Variant<>(1));
+    int lastDot = serviceName.lastIndexOf('.');
+    String id = (0 < lastDot && lastDot < serviceName.length()) ? serviceName.substring(lastDot + 1) : serviceName;
+    myProperties.put("Id", new Variant<>(id));
     myProperties.put("Title", new Variant<>(title));
     myProperties.put("Status", new Variant<>("Active"));
     myProperties.put("Category", new Variant<>(category.toString()));
