@@ -7,7 +7,7 @@ import org.freedesktop.dbus.DBusSignal;
 import org.freedesktop.dbus.exceptions.DBusException;
 
 
-@DBusInterfaceName(value = "org.freedesktop.IStatusNotifierItem")
+@DBusInterfaceName(value = "org.kde.StatusNotifierItem")
 public interface IStatusNotifierItem extends DBusInterface {
   void ContextMenu(int x, int y);
   void Activate(int x, int y);

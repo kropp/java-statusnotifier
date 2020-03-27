@@ -11,13 +11,13 @@ import java.util.HashMap;
 import java.util.List;
 
 public class DBusMenu implements IDBusMenu {
-  private final DBusConnection connection;
   private final String MENU_OBJECTPATH = "/MenuBar";
   private List<StatusNotifierItem.MenuItem> menuItems;
+  private int myRevision = 2;
 
   public DBusMenu(String serviceName, List<StatusNotifierItem.MenuItem> menuItems) throws DBusException {
     this.menuItems = menuItems;
-    connection = DBusConnection.getConnection(DBusConnection.SESSION);
+    DBusConnection connection = DBusConnection.getConnection(DBusConnection.SESSION);
     connection.requestBusName(serviceName);
     connection.exportObject(MENU_OBJECTPATH, this);
   }
@@ -30,7 +30,7 @@ public class DBusMenu implements IDBusMenu {
     for (int i = 0; i < menuItems.size(); i++) {
       layout.add(new Variant<>(new MenuItem(i + 2)));
     }
-    return new Pair<>(new UInt32(2), new Layout(
+    return new Pair<>(new UInt32(myRevision++), new Layout(
         0, props, layout
     ));
   }
