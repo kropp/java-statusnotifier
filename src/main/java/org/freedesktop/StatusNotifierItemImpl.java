@@ -1,6 +1,8 @@
 package org.freedesktop;
 
+import com.canonical.DBusMenu;
 import org.freedesktop.dbus.DBusConnection;
+import org.freedesktop.dbus.UInt32;
 import org.freedesktop.dbus.Variant;
 import org.freedesktop.dbus.exceptions.DBusException;
 
@@ -20,12 +22,17 @@ class StatusNotifierItemImpl implements IStatusNotifierItem, DBus.Properties {
     String id = (0 < lastDot && lastDot < serviceName.length()) ? serviceName.substring(lastDot + 1) : serviceName;
     myProperties.put("Id", new Variant<>(id));
     myProperties.put("Title", new Variant<>(title));
+    myProperties.put("Tooltip", new Variant<>(title));
     myProperties.put("Status", new Variant<>("Active"));
     myProperties.put("Category", new Variant<>(category.toString()));
 //    myProperties.put("IconName", new Variant<>(icon));
     Pixmap[] pixmapArray = new Pixmap[pixmaps.size()];
     pixmaps.toArray(pixmapArray);
     myProperties.put("IconPixmap", new Variant<>(pixmapArray));
+    myProperties.put("IconThemePath", new Variant<>(""));
+    myProperties.put("ItemIsMenu", new Variant<>(false));
+    myProperties.put("Menu", new Variant<>(DBusMenu.MENU_OBJECTPATH));
+    myProperties.put("WindowId", new Variant<>(new UInt32(0)));
 
     connection = DBusConnection.getConnection(DBusConnection.SESSION);
     connection.requestBusName(serviceName);

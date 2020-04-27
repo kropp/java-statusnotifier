@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class DBusMenu implements IDBusMenu {
-  private final String MENU_OBJECTPATH = "/MenuBar";
+  public static final String MENU_OBJECTPATH = "/MenuBar";
   private List<StatusNotifierItem.MenuItem> menuItems;
   private int myRevision = 2;
 
