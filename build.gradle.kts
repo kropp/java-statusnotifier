@@ -17,6 +17,10 @@ dependencies {
   implementation("org.slf4j:slf4j-api:$slf4jVersion")
   implementation("org.slf4j:slf4j-simple:$slf4jVersion")
 
+  val jnaVersion = "5.3.1"
+  implementation("net.java.dev.jna:jna:$jnaVersion")
+  implementation("net.java.dev.jna:jna-platform:$jnaVersion")
+
   testImplementation("org.junit.jupiter:junit-jupiter:5.6.0")
 }
 
