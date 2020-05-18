@@ -18,7 +18,7 @@ public class AppIndicator {
       throw new IllegalStateException("Cannot initialize gtk");
     }
 
-    Pointer appIndicator = libAppIndicator.app_indicator_new_with_path(serviceName, iconName, AppIndicatorCategory.from(category), themePath);
+    GAppIndicator appIndicator = libAppIndicator.app_indicator_new_with_path(serviceName, iconName, AppIndicatorCategory.from(category), themePath);
     libAppIndicator.app_indicator_set_status(appIndicator, AppIndicatorStatus.ACTIVE);
 
 

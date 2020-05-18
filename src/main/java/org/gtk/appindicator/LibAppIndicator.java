@@ -11,11 +11,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public interface LibAppIndicator extends Library {
-  Pointer app_indicator_new_with_path(String id, String icon_name, AppIndicatorCategory category, String icon_theme_path);
-  void    app_indicator_set_status         (Pointer self, AppIndicatorStatus status);
-  void    app_indicator_set_icon           (Pointer self, String icon_name);
-  void    app_indicator_set_attention_icon (Pointer self, String icon_name);
-  void    app_indicator_set_menu           (Pointer self, Pointer menu);
+  GAppIndicator app_indicator_new_with_path      (String id, String icon_name, AppIndicatorCategory category, String icon_theme_path);
+  void          app_indicator_set_status         (GAppIndicator self, AppIndicatorStatus status);
+  void          app_indicator_set_icon           (GAppIndicator self, String icon_name);
+  void          app_indicator_set_attention_icon (GAppIndicator self, String icon_name);
+  void          app_indicator_set_menu           (GAppIndicator self, Pointer menu);
 
   Map<String, Object> OPTIONS = Collections.unmodifiableMap(new HashMap<String, Object>() {
     {
