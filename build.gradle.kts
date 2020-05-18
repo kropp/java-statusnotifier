@@ -9,10 +9,11 @@ repositories {
 }
 
 group = "com.github.kropp"
-version = "0.1.4"
+version = "0.2.0"
 
 dependencies {
   implementation("com.github.hypfvieh:dbus-java:master")
+
   val slf4jVersion = "1.7.26"
   implementation("org.slf4j:slf4j-api:$slf4jVersion")
   implementation("org.slf4j:slf4j-simple:$slf4jVersion")
