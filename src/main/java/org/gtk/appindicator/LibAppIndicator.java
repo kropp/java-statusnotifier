@@ -32,7 +32,7 @@ public interface LibAppIndicator extends Library {
   static LibAppIndicator getInstance() {
     try {
       return Native.load("libappindicator3.so", LibAppIndicator.class, OPTIONS);
-    } catch (Exception e) {
+    } catch (UnsatisfiedLinkError e) {
       return Native.load("libappindicator3.so.1", LibAppIndicator.class, OPTIONS);
     }
   }
