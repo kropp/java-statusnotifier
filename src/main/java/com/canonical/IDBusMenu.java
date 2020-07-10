@@ -124,6 +124,10 @@ import java.util.List;
  */
 @DBusInterfaceName("com.canonical.dbusmenu")
 public interface IDBusMenu extends DBusInterface {
+  /**
+   * Triggered when there are lots of property updates across many items so they all get grouped into a single dbus message.
+   * The format is the ID of the item with a hashtable of names and values for those properties.
+   */
   class ItemsPropertiesUpdated extends DBusSignal {
     public final List<UpdatedProperties> updatedProps;
     public final List<RemovedProperties> removedProps;
@@ -135,10 +139,21 @@ public interface IDBusMenu extends DBusInterface {
     }
   }
 
+  /**
+   * Triggered by the application to notify display of a layout update, up to revision
+   */
   class LayoutUpdated extends DBusSignal {
     public final UInt32 revision;
     public final int parent;
 
+    /**
+     *
+     * @param path
+     * @param revision The revision of the layout that we're currently on
+     * @param parent If the layout update is only of a subtree, this is the parent item for the entries that have changed.
+     *             It is zero if the whole layout should be considered invalid.
+     * @throws DBusException
+     */
     public LayoutUpdated(String path, UInt32 revision, int parent) throws DBusException {
       super(path, revision, parent);
 
@@ -147,10 +162,20 @@ public interface IDBusMenu extends DBusInterface {
     }
   }
 
+  /**
+   * The server is requesting that all clients displaying this menu open it to the user.
+   * This would be for things like hotkeys that when the user presses them the menu should open and display itself to the user.
+   */
   class ItemActivationRequested extends DBusSignal {
     public final int id;
     public final UInt32 timestamp;
 
+    /**
+     * @param path
+     * @param id ID of the menu that should be activated
+     * @param timestamp The time that the event occured
+     * @throws DBusException
+     */
     public ItemActivationRequested(String path, int id, UInt32 timestamp) throws DBusException {
       super(path, id, timestamp);
       this.id = id;
@@ -192,12 +217,33 @@ public interface IDBusMenu extends DBusInterface {
    */
   List<UpdatedProperties> GetGroupProperties(List<Integer> ids, List<String> propertyNames);
 
+  /**
+   * Get a signal property on a single item.  This is not useful if you're going to implement this interface,
+   * it should only be used if you're debugging via a commandline tool.
+   * @param id the id of the item which received the event
+   * @param name the name of the property to get
+   * @return the value of the property
+   */
   Variant<?> GetProperty(int id, String name);
 
+  /**
+   * This is called by the applet to notify the application an event happened on a menu item.
+   *
+   * @param id the id of the item which received the event
+   * @param eventId the type of event, which can be one of the following: "clicked" or "hovered"
+   *                Vendor specific events can be added by prefixing them with "x-<vendor>-"
+   * @param data event-specific data
+   * @param timestamp The time that the event occured if available or the time the message was sent if not
+   */
   void Event(int id, String eventId, Variant<?> data, UInt32 timestamp);
 
   List<Integer> EventGroup(List<Event> events);
 
+  /**
+   * This is called by the applet to notify the application that it is about to show the menu under the specified item.
+   * @param id Which menu item represents the parent of the item about to be shown.
+   * @return Whether this AboutToShow event should result in the menu being updated.
+   */
   boolean AboutToShow(int id);
 
   Pair<List<Integer>, List<Integer>> AboutToShowGroup(List<Integer> ids);
