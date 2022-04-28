@@ -1,11 +1,12 @@
 package com.canonical;
 
+
+import org.freedesktop.dbus.Struct;
+import org.freedesktop.dbus.annotations.Position;
+import org.freedesktop.dbus.types.Variant;
+
 import java.util.List;
 import java.util.Map;
-
-import org.freedesktop.dbus.Position;
-import org.freedesktop.dbus.Struct;
-import org.freedesktop.dbus.Variant;
 
 public final class Layout extends Struct {
   @Position(0)

@@ -1,16 +1,19 @@
 package org.freedesktop;
 
 import com.canonical.DBusMenu;
-import org.freedesktop.dbus.DBusConnection;
-import org.freedesktop.dbus.UInt32;
-import org.freedesktop.dbus.Variant;
+import org.freedesktop.dbus.connections.impl.DBusConnection;
 import org.freedesktop.dbus.exceptions.DBusException;
+import org.freedesktop.dbus.interfaces.Properties;
+import org.freedesktop.dbus.types.UInt32;
+import org.freedesktop.dbus.types.Variant;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-class StatusNotifierItemImpl implements IStatusNotifierItem, DBus.Properties {
+import static org.freedesktop.dbus.connections.impl.DBusConnection.DBusBusType.SESSION;
+
+class StatusNotifierItemImpl implements IStatusNotifierItem, Properties {
   private final String WATCHER_BUSNAME = "org.kde.StatusNotifierWatcher";
   private final String WATCHER_OBJECTPATH = "/StatusNotifierWatcher";
   private final String SNI_OBJECTPATH = "/StatusNotifierItem";
@@ -34,7 +37,7 @@ class StatusNotifierItemImpl implements IStatusNotifierItem, DBus.Properties {
     myProperties.put("Menu", new Variant<>(DBusMenu.MENU_OBJECTPATH));
     myProperties.put("WindowId", new Variant<>(new UInt32(0)));
 
-    connection = DBusConnection.getConnection(DBusConnection.SESSION);
+    connection = DBusConnection.getConnection(SESSION);
     connection.requestBusName(serviceName);
     connection.exportObject(SNI_OBJECTPATH, this);
 
@@ -111,5 +114,10 @@ class StatusNotifierItemImpl implements IStatusNotifierItem, DBus.Properties {
   @Override
   public boolean isRemote() {
     return false;
+  }
+
+  @Override
+  public String getObjectPath() {
+    return SNI_OBJECTPATH;
   }
 }

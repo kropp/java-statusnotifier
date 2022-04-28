@@ -2,9 +2,9 @@ package com.canonical;
 
 import java.util.Map;
 
-import org.freedesktop.dbus.Position;
 import org.freedesktop.dbus.Struct;
-import org.freedesktop.dbus.Variant;
+import org.freedesktop.dbus.annotations.Position;
+import org.freedesktop.dbus.types.Variant;
 
 public final class UpdatedProperties extends Struct {
   @Position(0)

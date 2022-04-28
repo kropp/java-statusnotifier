@@ -1,7 +1,7 @@
 package com.canonical;
 
-import org.freedesktop.dbus.Position;
 import org.freedesktop.dbus.Tuple;
+import org.freedesktop.dbus.annotations.Position;
 
 public final class Pair<A,B> extends Tuple {
   @Position(0)

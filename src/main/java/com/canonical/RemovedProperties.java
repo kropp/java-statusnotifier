@@ -2,8 +2,8 @@ package com.canonical;
 
 import java.util.List;
 
-import org.freedesktop.dbus.Position;
 import org.freedesktop.dbus.Struct;
+import org.freedesktop.dbus.annotations.Position;
 
 public final class RemovedProperties extends Struct {
   @Position(0)

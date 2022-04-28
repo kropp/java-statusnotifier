@@ -1,9 +1,9 @@
 package com.canonical;
 
-import org.freedesktop.dbus.Position;
 import org.freedesktop.dbus.Struct;
-import org.freedesktop.dbus.UInt32;
-import org.freedesktop.dbus.Variant;
+import org.freedesktop.dbus.annotations.Position;
+import org.freedesktop.dbus.types.UInt32;
+import org.freedesktop.dbus.types.Variant;
 
 public final class Event extends Struct {
   @Position(0)

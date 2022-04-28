@@ -1,7 +1,7 @@
 package org.freedesktop;
 
-import org.freedesktop.dbus.Position;
 import org.freedesktop.dbus.Struct;
+import org.freedesktop.dbus.annotations.Position;
 
 public class Pixmap extends Struct {
   @Position(0)

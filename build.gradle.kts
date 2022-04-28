@@ -9,24 +9,25 @@ repositories {
 }
 
 group = "com.github.kropp"
-version = "0.2.1"
+version = "0.3.0"
 
 dependencies {
-  implementation("com.github.hypfvieh:dbus-java:master")
+  implementation("com.github.hypfvieh:dbus-java-core:4.0.0")
+  implementation("com.github.hypfvieh:dbus-java-transport-native-unixsocket:4.0.0")
 
-  val slf4jVersion = "1.7.26"
+  val slf4jVersion = "1.7.36"
   implementation("org.slf4j:slf4j-api:$slf4jVersion")
   implementation("org.slf4j:slf4j-simple:$slf4jVersion")
 
-  val jnaVersion = "5.3.1"
+  val jnaVersion = "5.11.0"
   implementation("net.java.dev.jna:jna:$jnaVersion")
   implementation("net.java.dev.jna:jna-platform:$jnaVersion")
 
-  testImplementation("org.junit.jupiter:junit-jupiter:5.6.0")
+  testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
 }
 
-configure<JavaPluginConvention> {
-  sourceCompatibility = JavaVersion.VERSION_1_8
+tasks.withType<JavaCompile> {
+  sourceCompatibility = "17"
 }
 
 tasks.wrapper {

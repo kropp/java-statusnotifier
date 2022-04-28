@@ -1,14 +1,16 @@
 package com.canonical;
 
 import org.freedesktop.StatusNotifierItem;
-import org.freedesktop.dbus.DBusConnection;
-import org.freedesktop.dbus.UInt32;
-import org.freedesktop.dbus.Variant;
+import org.freedesktop.dbus.connections.impl.DBusConnection;
 import org.freedesktop.dbus.exceptions.DBusException;
+import org.freedesktop.dbus.types.UInt32;
+import org.freedesktop.dbus.types.Variant;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import static org.freedesktop.dbus.connections.impl.DBusConnection.DBusBusType.SESSION;
 
 public class DBusMenu implements IDBusMenu {
   public static final String MENU_OBJECTPATH = "/MenuBar";
@@ -17,7 +19,7 @@ public class DBusMenu implements IDBusMenu {
 
   public DBusMenu(String serviceName, List<StatusNotifierItem.MenuItem> menuItems) throws DBusException {
     this.menuItems = menuItems;
-    DBusConnection connection = DBusConnection.getConnection(DBusConnection.SESSION);
+    DBusConnection connection = DBusConnection.getConnection(SESSION);
     connection.requestBusName(serviceName);
     connection.exportObject(MENU_OBJECTPATH, this);
   }
@@ -76,6 +78,11 @@ public class DBusMenu implements IDBusMenu {
   @Override
   public boolean isRemote() {
     return false;
+  }
+
+  @Override
+  public String getObjectPath() {
+    return MENU_OBJECTPATH;
   }
 
   @Override
