@@ -35,3 +35,11 @@ tasks.wrapper {
   gradleVersion = "7.4.2"
   distributionUrl = "https://services.gradle.org/distributions/gradle-$gradleVersion-bin.zip"
 }
+
+publishing {
+  publications {
+    create<MavenPublication>("Maven") {
+      from(components["java"])
+    }
+  }
+}
