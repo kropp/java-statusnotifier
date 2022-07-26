@@ -36,8 +36,8 @@ public class StatusNotifierItem {
       return listener;
     }
 
-    private String text;
-    private StatusNotifierItemMenuItemListener listener;
+    private final String text;
+    private final StatusNotifierItemMenuItemListener listener;
   }
 
   private StatusNotifierItemImpl statusNotifierItem;

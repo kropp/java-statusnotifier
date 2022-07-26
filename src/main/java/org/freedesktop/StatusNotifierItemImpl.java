@@ -18,17 +18,17 @@ class StatusNotifierItemImpl implements IStatusNotifierItem, Properties {
   private final String WATCHER_OBJECTPATH = "/StatusNotifierWatcher";
   private final String SNI_OBJECTPATH = "/StatusNotifierItem";
 
-  private Map<String, Variant<?>> myProperties = new HashMap<>();
+  private final Map<String, Variant<?>> myProperties = new HashMap<>();
 
   public StatusNotifierItemImpl(String serviceName, String title, Category category, List<Pixmap> pixmaps) throws DBusException {
     int lastDot = serviceName.lastIndexOf('.');
-    String id = (0 < lastDot && lastDot < serviceName.length()) ? serviceName.substring(lastDot + 1) : serviceName;
+    String id = 0 < lastDot ? serviceName.substring(lastDot + 1) : serviceName;
     myProperties.put("Id", new Variant<>(id));
     myProperties.put("Title", new Variant<>(title));
     myProperties.put("Tooltip", new Variant<>(title));
     myProperties.put("Status", new Variant<>("Active"));
     myProperties.put("Category", new Variant<>(category.toString()));
-//    myProperties.put("IconName", new Variant<>(icon));
+    myProperties.put("IconName", new Variant<>(id));
     Pixmap[] pixmapArray = new Pixmap[pixmaps.size()];
     pixmaps.toArray(pixmapArray);
     myProperties.put("IconPixmap", new Variant<>(pixmapArray));
@@ -37,7 +37,7 @@ class StatusNotifierItemImpl implements IStatusNotifierItem, Properties {
     myProperties.put("Menu", new Variant<>(DBusMenu.MENU_OBJECTPATH));
     myProperties.put("WindowId", new Variant<>(new UInt32(0)));
 
-    connection = DBusConnection.getConnection(SESSION);
+    DBusConnection connection = DBusConnection.getConnection(SESSION);
     connection.requestBusName(serviceName);
     connection.exportObject(SNI_OBJECTPATH, this);
 
@@ -45,8 +45,6 @@ class StatusNotifierItemImpl implements IStatusNotifierItem, Properties {
 
     watcher.RegisterStatusNotifierItem(serviceName);
   }
-
-  private DBusConnection connection;
 
   @Override
   public <A> A Get(String s, String s1) {
