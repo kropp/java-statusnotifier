@@ -6,9 +6,9 @@ import org.freedesktop.dbus.exceptions.DBusException;
 import java.util.List;
 
 public class StatusNotifierItem {
-  public StatusNotifierItem(String serviceName, String title, IStatusNotifierItem.Category category, List<Pixmap> pixmaps, List<MenuItem> menuItems) throws DBusException {
+  public StatusNotifierItem(String serviceName, String title, IStatusNotifierItem.Category category, List<Pixmap> pixmaps, String iconName, String iconThemePath, List<MenuItem> menuItems) throws DBusException {
     try {
-      statusNotifierItem = new StatusNotifierItemImpl(serviceName, title, category, pixmaps);
+      statusNotifierItem = new StatusNotifierItemImpl(serviceName, title, category, pixmaps, iconName, iconThemePath);
       new DBusMenu(serviceName, menuItems);
     } catch (DBusException e) {
       statusNotifierItem = null;

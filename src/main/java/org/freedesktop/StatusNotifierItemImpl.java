@@ -20,7 +20,7 @@ class StatusNotifierItemImpl implements IStatusNotifierItem, Properties {
 
   private final Map<String, Variant<?>> myProperties = new HashMap<>();
 
-  public StatusNotifierItemImpl(String serviceName, String title, Category category, List<Pixmap> pixmaps) throws DBusException {
+  public StatusNotifierItemImpl(String serviceName, String title, Category category, List<Pixmap> pixmaps, String iconName, String iconThemePath) throws DBusException {
     int lastDot = serviceName.lastIndexOf('.');
     String id = 0 < lastDot ? serviceName.substring(lastDot + 1) : serviceName;
     myProperties.put("Id", new Variant<>(id));
@@ -28,11 +28,11 @@ class StatusNotifierItemImpl implements IStatusNotifierItem, Properties {
     myProperties.put("Tooltip", new Variant<>(title));
     myProperties.put("Status", new Variant<>("Active"));
     myProperties.put("Category", new Variant<>(category.toString()));
-    myProperties.put("IconName", new Variant<>(id));
+    myProperties.put("IconName", new Variant<>(iconName));
     Pixmap[] pixmapArray = new Pixmap[pixmaps.size()];
     pixmaps.toArray(pixmapArray);
     myProperties.put("IconPixmap", new Variant<>(pixmapArray));
-    myProperties.put("IconThemePath", new Variant<>(""));
+    myProperties.put("IconThemePath", new Variant<>(iconThemePath));
     myProperties.put("ItemIsMenu", new Variant<>(false));
     myProperties.put("Menu", new Variant<>(DBusMenu.MENU_OBJECTPATH));
     myProperties.put("WindowId", new Variant<>(new UInt32(0)));
