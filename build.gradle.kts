@@ -17,7 +17,6 @@ dependencies {
 
   val slf4jVersion = "1.7.36"
   implementation("org.slf4j:slf4j-api:$slf4jVersion")
-  implementation("org.slf4j:slf4j-simple:$slf4jVersion")
 
   val jnaVersion = "5.11.0"
   implementation("net.java.dev.jna:jna:$jnaVersion")
