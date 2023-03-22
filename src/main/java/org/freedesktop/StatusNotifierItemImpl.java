@@ -48,7 +48,7 @@ class StatusNotifierItemImpl implements IStatusNotifierItem, Properties {
 
   @Override
   public <A> A Get(String s, String s1) {
-    return (A) myProperties.get(s);
+    return (A) myProperties.get(s1);
   }
 
   @Override
