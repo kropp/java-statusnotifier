@@ -9,7 +9,7 @@ repositories {
 }
 
 group = "com.github.kropp"
-version = "0.3.3"
+version = "0.3.4"
 
 dependencies {
   implementation("com.github.hypfvieh:dbus-java-core:4.0.0")
